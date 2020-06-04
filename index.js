@@ -55,22 +55,23 @@ const randomiseTargets = () => {
 };
 
 //tile check and reveal
-const tileReveal = (e) => {
-  let targetCoords = {
-    x: parseInt(e.target.dataset.row, 0),
-    y: parseInt(e.target.dataset.col, 0)
+const tileReveal = (targetTile, targetCoords) => {
+  console.log(targetTile, targetCoords);
+  let clickCoords = {
+    x: parseInt(targetCoords.x, 0),
+    y: parseInt(targetCoords.y, 0)
   };
   if (
     targetsArray.some(
-      (coords) => JSON.stringify(coords) === JSON.stringify(targetCoords)
+      (coords) => JSON.stringify(coords) === JSON.stringify(clickCoords)
     )
   ) {
-    e.target.classList.add("hit");
+    targetTile.classList.add("hit");
     message.classList.remove("hidden");
     message.innerText = "Game Over!";
   } else {
-    e.target.classList.add("empty");
-    e.target.innerText = checkNeighbours(targetCoords);
+    targetTile.classList.add("empty");
+    targetTile.innerText = checkNeighbours(clickCoords);
   }
 };
 
@@ -94,15 +95,35 @@ const checkNeighbours = (targetCoords) => {
 };
 
 const revealHints = () => {
-  for (let hintsCount = 0; hintCounts < 5; hints++) {}
+  for (let hintsCount = 0; hintsCount < 5; hintsCount++) {
+    let tiles = document.querySelectorAll(".tile");
+    let hintSquare = Math.floor(Math.random() * tiles.length);
+    let hintCoords = {
+      x: tiles[hintSquare].dataset.row,
+      y: tiles[hintSquare].dataset.col
+    };
+
+    targetsArray.some(
+      (targetCoords) =>
+        JSON.stringify(hintCoords) === JSON.stringify(targetCoords)
+    )
+      ? (hintsCount -= 1)
+      : tileReveal(tiles[hintSquare], hintCoords);
+  }
 };
 
 //add clickHandlers
 ////tile clicks
 const addClickHandlers = () => {
-  document
-    .querySelectorAll(".tile")
-    .forEach((t) => t.addEventListener("click", (e) => tileReveal(e)));
+  document.querySelectorAll(".tile").forEach((t) =>
+    t.addEventListener("click", (e) => {
+      let targetCoords = {
+        x: parseInt(e.target.dataset.row, 0),
+        y: parseInt(e.target.dataset.col, 0)
+      };
+      tileReveal(e.target, targetCoords);
+    })
+  );
 
   ////button click
   document.querySelector("#reset").addEventListener("click", () => reset());
@@ -111,6 +132,7 @@ const addClickHandlers = () => {
 const reset = () => {
   generateField();
   randomiseTargets();
+  revealHints();
   addClickHandlers();
 };
 
