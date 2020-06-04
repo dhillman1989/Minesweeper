@@ -8,6 +8,7 @@ const grid = document.querySelector("#grid");
 
 //Create Grid and assign co-ords
 const generateField = () => {
+  grid.innerHTML = "";
   for (let r = 0; r < numRows; r++) {
     grid.innerHTML = grid.innerHTML + `<div class="row"></div>`;
   }
@@ -49,7 +50,10 @@ const addClickHandlers = () => {
   const tiles = document
     .querySelectorAll(".tile")
     .forEach((t) => t.addEventListener("click", () => console.log("clicked")));
+
+  document.querySelector("#reset").addEventListener("click", reset());
 };
+
 const reset = () => {
   generateField();
   randomiseTargets();
