@@ -1,2 +1,0 @@
-# Minesweeper
-Created with CodeSandbox
