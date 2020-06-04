@@ -1,6 +1,8 @@
 const numCols = 8;
 const numRows = 8;
 const totalsquares = numCols * numRows;
+const numTargets = 10;
+const targetsArray = [];
 
 const grid = document.querySelector("#grid");
 
@@ -25,11 +27,28 @@ const generateField = () => {
 };
 
 //randomize targets
+const randomiseTargets = () => {
+  let count = 0;
+  console.log(count);
+  while (count < numTargets) {
+    let xPoint = Math.floor(Math.random() * numCols);
+    let yPoint = Math.floor(Math.random() * numRows);
+    if (targetsArray.some((item) => item === { x: xPoint, y: yPoint })) {
+      continue;
+    } else {
+      let target = { x: xPoint, y: yPoint };
+      targetsArray.push(target);
+      count++;
+      console.log(targetsArray);
+    }
+  }
+};
 
 //clickHandlers
 
 const reset = () => {
   generateField();
+  randomiseTargets();
 };
 
 reset();
