@@ -44,11 +44,16 @@ const randomiseTargets = () => {
   }
 };
 
-//clickHandlers
-
+//add clickHandlers
+const addClickHandlers = () => {
+  const tiles = document
+    .querySelectorAll(".tile")
+    .forEach((t) => t.addEventListener("click", () => console.log("clicked")));
+};
 const reset = () => {
   generateField();
   randomiseTargets();
+  addClickHandlers();
 };
 
 reset();
