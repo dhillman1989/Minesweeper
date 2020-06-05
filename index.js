@@ -1,8 +1,8 @@
 const numCols = 8;
 const numRows = 8;
-const numTargets = 10;
 let targetsArray = [];
 const message = document.querySelector("#message");
+let flagMode = false;
 
 const grid = document.querySelector("#grid");
 
@@ -33,7 +33,7 @@ const generateField = () => {
 };
 
 //randomize targets
-const randomiseTargets = () => {
+const randomiseTargets = (numTargets) => {
   let count = 0;
   while (count < numTargets) {
     let xPoint = Math.floor(Math.random() * numRows);
@@ -97,7 +97,12 @@ const checkNeighbours = (targetCoords) => {
 const addClickHandlers = () => {
   document.querySelectorAll(".tile").forEach((t) =>
     t.addEventListener("click", (e) => {
-      tileReveal(e.target);
+      console.log(flagMode);
+      if (flagMode) {
+        e.target.classList.toggle("flagged");
+      } else {
+        !e.target.classList.contains("flagged") && tileReveal(e.target);
+      }
     })
   );
   ////button click
@@ -112,14 +117,21 @@ const revealHints = (numHints) => {
     let mineHere = targetsArray.some(
       (t) => t.x == randomTile.dataset.row && t.y == randomTile.dataset.col
     );
-    mineHere ? console.log("Mine Here") : tileReveal(randomTile);
+    !mineHere ? tileReveal(randomTile) : i--;
   }
 };
 
+document.addEventListener("keydown", (e) => {
+  e.which === 70 && flagMode === false && (flagMode = true);
+});
+document.addEventListener("keyup", (e) => {
+  e.which === 70 && flagMode === true && (flagMode = false);
+});
+
 const reset = () => {
   generateField();
-  randomiseTargets();
-  revealHints(7);
+  randomiseTargets(12);
+  revealHints(15);
   addClickHandlers();
 };
 

@@ -3,6 +3,9 @@ body {
   font-family: verdana;
   font-weight: bold;
   color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .container {
@@ -63,7 +66,7 @@ body {
 }
 
 .flagged {
-  background: blue;
+  background: green;
 }
 
 .message {
