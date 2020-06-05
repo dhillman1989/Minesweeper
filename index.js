@@ -3,7 +3,6 @@ const numRows = 8;
 let targetsArray = [];
 const message = document.querySelector("#message");
 let flagMode = false;
-
 const grid = document.querySelector("#grid");
 
 //Create Grid and assign co-ords
@@ -97,7 +96,6 @@ const checkNeighbours = (targetCoords) => {
 const addClickHandlers = () => {
   document.querySelectorAll(".tile").forEach((t) =>
     t.addEventListener("click", (e) => {
-      console.log(flagMode);
       if (flagMode) {
         e.target.classList.toggle("flagged");
       } else {
@@ -130,9 +128,11 @@ document.addEventListener("keyup", (e) => {
 
 const reset = () => {
   generateField();
-  randomiseTargets(12);
+  randomiseTargets(10);
   revealHints(15);
   addClickHandlers();
 };
 
-reset();
+setTimeout(() => {
+  reset();
+}, 500);

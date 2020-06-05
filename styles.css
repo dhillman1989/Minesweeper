@@ -3,9 +3,6 @@ body {
   font-family: verdana;
   font-weight: bold;
   color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .container {
@@ -20,6 +17,7 @@ body {
 
 .grid-container {
   display: flex;
+  overflow: hidden;
   flex-direction: column;
 }
 
@@ -107,4 +105,14 @@ span {
   font-weight: bold;
   font-size: 20px;
   border: none;
+  outline: 0;
+  border-radius: 0 0 5px 5px;
+}
+
+#reset:hover {
+  background-color: #eee;
+}
+
+p {
+  color: #fff;
 }
