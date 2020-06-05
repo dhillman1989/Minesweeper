@@ -1,6 +1,5 @@
 const numCols = 8;
 const numRows = 8;
-const totalsquares = numCols * numRows;
 const numTargets = 10;
 let targetsArray = [];
 const message = document.querySelector("#message");
@@ -55,23 +54,22 @@ const randomiseTargets = () => {
 };
 
 //tile check and reveal
-const tileReveal = (targetTile, targetCoords) => {
-  console.log(targetTile, targetCoords);
+const tileReveal = (target) => {
   let clickCoords = {
-    x: parseInt(targetCoords.x, 0),
-    y: parseInt(targetCoords.y, 0)
+    x: parseInt(target.dataset.row, 0),
+    y: parseInt(target.dataset.col, 0)
   };
   if (
     targetsArray.some(
       (coords) => JSON.stringify(coords) === JSON.stringify(clickCoords)
     )
   ) {
-    targetTile.classList.add("hit");
+    target.classList.add("hit");
     message.classList.remove("hidden");
     message.innerText = "Game Over!";
   } else {
-    targetTile.classList.add("empty");
-    targetTile.innerText = checkNeighbours(clickCoords);
+    target.classList.add("empty");
+    target.innerText = checkNeighbours(clickCoords);
   }
 };
 
@@ -94,45 +92,34 @@ const checkNeighbours = (targetCoords) => {
   return activeNeighbours;
 };
 
-const revealHints = () => {
-  for (let hintsCount = 0; hintsCount < 5; hintsCount++) {
-    let tiles = document.querySelectorAll(".tile");
-    let hintSquare = Math.floor(Math.random() * tiles.length);
-    let hintCoords = {
-      x: tiles[hintSquare].dataset.row,
-      y: tiles[hintSquare].dataset.col
-    };
-
-    targetsArray.some(
-      (targetCoords) =>
-        JSON.stringify(hintCoords) === JSON.stringify(targetCoords)
-    )
-      ? (hintsCount -= 1)
-      : tileReveal(tiles[hintSquare], hintCoords);
-  }
-};
-
 //add clickHandlers
 ////tile clicks
 const addClickHandlers = () => {
   document.querySelectorAll(".tile").forEach((t) =>
     t.addEventListener("click", (e) => {
-      let targetCoords = {
-        x: parseInt(e.target.dataset.row, 0),
-        y: parseInt(e.target.dataset.col, 0)
-      };
-      tileReveal(e.target, targetCoords);
+      tileReveal(e.target);
     })
   );
-
   ////button click
   document.querySelector("#reset").addEventListener("click", () => reset());
+};
+
+const revealHints = (numHints) => {
+  let tiles = document.querySelectorAll(".tile");
+  for (let i = 0; i < numHints; i++) {
+    let randomTile = tiles[Math.floor(Math.random() * tiles.length)];
+    //check for mine in square, skip if there is
+    let mineHere = targetsArray.some(
+      (t) => t.x == randomTile.dataset.row && t.y == randomTile.dataset.col
+    );
+    mineHere ? console.log("Mine Here") : tileReveal(randomTile);
+  }
 };
 
 const reset = () => {
   generateField();
   randomiseTargets();
-  revealHints();
+  revealHints(7);
   addClickHandlers();
 };
 
