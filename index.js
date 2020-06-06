@@ -5,12 +5,13 @@ const message = document.querySelector("#message");
 let flagMode = false;
 const grid = document.querySelector("#grid");
 
+//// restart button click
+document.querySelector("#reset").addEventListener("click", () => reset());
+
 //Create Grid and assign co-ords
 
 const generateField = () => {
-  //hide gameover screen
   !message.classList.contains("hidden") && message.classList.add("hidden");
-
   grid.innerHTML = "";
   targetsArray = [];
   for (let r = 0; r < numRows; r++) {
@@ -32,14 +33,14 @@ const generateField = () => {
 };
 
 //randomize targets
-const randomiseTargets = (numTargets) => {
+const randomiseTargets = numTargets => {
   let count = 0;
   while (count < numTargets) {
     let xPoint = Math.floor(Math.random() * numRows);
     let yPoint = Math.floor(Math.random() * numCols);
     if (
       targetsArray.some(
-        (item) =>
+        item =>
           JSON.stringify(item) === JSON.stringify({ x: xPoint, y: yPoint })
       )
     ) {
@@ -53,14 +54,14 @@ const randomiseTargets = (numTargets) => {
 };
 
 //tile check and reveal
-const tileReveal = (target) => {
+const tileReveal = target => {
   let clickCoords = {
     x: parseInt(target.dataset.row, 0),
     y: parseInt(target.dataset.col, 0)
   };
   if (
     targetsArray.some(
-      (coords) => JSON.stringify(coords) === JSON.stringify(clickCoords)
+      coords => JSON.stringify(coords) === JSON.stringify(clickCoords)
     )
   ) {
     target.classList.add("hit");
@@ -73,12 +74,12 @@ const tileReveal = (target) => {
 };
 
 //count neighbouring mines
-const checkNeighbours = (targetCoords) => {
+const checkNeighbours = targetCoords => {
   let { x, y } = targetCoords;
 
   //check each neighbour
   let activeNeighbours = 0;
-  targetsArray.forEach((target) => {
+  targetsArray.forEach(target => {
     target.x === x && target.y === y + 1 && activeNeighbours++;
     target.x === x && target.y === y - 1 && activeNeighbours++;
     target.x === x + 1 && target.y === y && activeNeighbours++;
@@ -94,8 +95,8 @@ const checkNeighbours = (targetCoords) => {
 //add clickHandlers
 ////tile clicks
 const addClickHandlers = () => {
-  document.querySelectorAll(".tile").forEach((t) =>
-    t.addEventListener("click", (e) => {
+  document.querySelectorAll(".tile").forEach(t =>
+    t.addEventListener("click", e => {
       if (flagMode) {
         e.target.classList.toggle("flagged");
       } else {
@@ -103,26 +104,24 @@ const addClickHandlers = () => {
       }
     })
   );
-  ////button click
-  document.querySelector("#reset").addEventListener("click", () => reset());
 };
 
-const revealHints = (numHints) => {
+const revealHints = numHints => {
   let tiles = document.querySelectorAll(".tile");
   for (let i = 0; i < numHints; i++) {
     let randomTile = tiles[Math.floor(Math.random() * tiles.length)];
     //check for mine in square, skip if there is
     let mineHere = targetsArray.some(
-      (t) => t.x == randomTile.dataset.row && t.y == randomTile.dataset.col
+      t => t.x == randomTile.dataset.row && t.y == randomTile.dataset.col
     );
     !mineHere ? tileReveal(randomTile) : i--;
   }
 };
 
-document.addEventListener("keydown", (e) => {
+document.addEventListener("keydown", e => {
   e.which === 70 && flagMode === false && (flagMode = true);
 });
-document.addEventListener("keyup", (e) => {
+document.addEventListener("keyup", e => {
   e.which === 70 && flagMode === true && (flagMode = false);
 });
 
