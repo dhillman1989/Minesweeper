@@ -93,8 +93,7 @@ body {
   color: #fff;
 }
 
-#reset,
-span {
+#reset {
   text-align: center;
   margin: auto;
   width: 400px;
