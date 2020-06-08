@@ -6,6 +6,7 @@ let flagMode = false;
 const grid = document.querySelector("#grid");
 const flagsPlaced = document.querySelector("#flagsPlaced");
 const flagsNeeded = document.querySelector("#flagsNeeded");
+const flagButton = document.querySelector("#flagButton");
 let squaresLeft = 0;
 
 //// restart button click
@@ -108,17 +109,21 @@ const addClickHandlers = () => {
       if (flagMode) {
         if (e.target.classList.contains("flagged")) {
           e.target.classList.remove("flagged");
-          flagsPlaced.innerText = parseInt(flagsPlaced.innerText, 0) - 1;
-        } else {
+          flagsPlaced.innerText = flagsPlaced.innerText * 1 - 1;
+        } else if (!e.target.classList.contains("empty")) {
           e.target.classList.add("flagged");
-          flagsPlaced.innerText = parseInt(flagsPlaced.innerText, 0) + 1;
+          flagsPlaced.innerText = flagsPlaced.innerText * 1 + 1;
         }
       } else {
         !e.target.classList.contains("flagged") && tileReveal(e.target);
       }
+      checkForWin();
     })
   );
-  checkForWin();
+  document.querySelector("#flagButton").addEventListener("click", () => {
+    flagButton.classList.toggle("buttonActive");
+    flagMode = !flagMode;
+  });
 };
 
 const revealHints = (numHints) => {
@@ -146,19 +151,17 @@ document.addEventListener("keyup", (e) => {
 });
 
 const checkForWin = () => {
-  if (
-    squaresLeft === 0 &&
-    parseInt(flagsPlaced.innerText, 0) === targetsArray.length
-  ) {
+  if (squaresLeft === 0 && flagsPlaced.innerText * 1 === targetsArray.length) {
     message.innerText = "YOU WON!";
     message.classList.remove("hidden");
   }
+  console.log(flagsPlaced.innerText * 1);
 };
 
 const reset = () => {
   generateField();
   randomiseTargets(10);
-  revealHints(30);
+  revealHints(34);
   addClickHandlers();
 };
 

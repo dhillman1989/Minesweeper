@@ -3,6 +3,11 @@
   <head>
     <title>Parcel Sandbox</title>
     <meta charset="UTF-8" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -16,9 +21,12 @@
       </div>
       <button id="reset">RESTART</button>
       <p>
-        Flags placed: <span id="flagsPlaced">0</span>/<span id="flagsNeeded"
-          >0</span
-        >
+        <button id="flagButton">
+          <i class="fab fa-font-awesome-flag"></i>
+        </button>
+        Flags placed:
+        <span id="flagsPlaced">0</span>/
+        <span id="flagsNeeded">0</span>
       </p>
     </div>
     <script src="index.js"></script>
