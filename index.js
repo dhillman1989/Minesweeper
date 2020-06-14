@@ -1,7 +1,8 @@
 const numCols = 10;
 const numRows = 10;
+
 let targetsArray = [];
-const message = document.querySelector("#message");
+let message;
 let flagMode = false;
 const grid = document.querySelector("#grid");
 const flagsPlaced = document.querySelector("#flagsPlaced");
@@ -20,8 +21,8 @@ document.querySelector("#flagButton").addEventListener("click", () => {
 //Create Grid and assign co-ords
 
 const generateField = () => {
-  !message.classList.contains("hidden") && message.classList.add("hidden");
-  grid.innerHTML = "";
+  grid.innerHTML = "<div id='message' class='hidden'></div>";
+  message = document.querySelector("#message");
   targetsArray = [];
   for (let r = 0; r < numRows; r++) {
     grid.innerHTML = grid.innerHTML + `<div class="row"></div>`;
@@ -153,6 +154,7 @@ const checkForWin = () => {
 
 const reset = () => {
   generateField();
+  const message = document.querySelector("#message");
   randomiseTargets(10);
   revealHints(12);
   addTileClickHandlers();
