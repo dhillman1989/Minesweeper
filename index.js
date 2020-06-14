@@ -1,5 +1,5 @@
-const numCols = 8;
-const numRows = 8;
+const numCols = 10;
+const numRows = 10;
 let targetsArray = [];
 const message = document.querySelector("#message");
 let flagMode = false;
@@ -11,6 +11,11 @@ let squaresLeft = 0;
 
 //// restart button click
 document.querySelector("#reset").addEventListener("click", () => reset());
+////flag button click
+document.querySelector("#flagButton").addEventListener("click", () => {
+  flagButton.classList.toggle("buttonActive");
+  flagMode = !flagMode;
+});
 
 //Create Grid and assign co-ords
 
@@ -103,7 +108,7 @@ const checkNeighbours = (targetCoords) => {
 
 //add clickHandlers
 ////tile clicks
-const addClickHandlers = () => {
+const addTileClickHandlers = () => {
   document.querySelectorAll(".tile").forEach((t) =>
     t.addEventListener("click", (e) => {
       if (flagMode) {
@@ -120,10 +125,6 @@ const addClickHandlers = () => {
       checkForWin();
     })
   );
-  document.querySelector("#flagButton").addEventListener("click", () => {
-    flagButton.classList.toggle("buttonActive");
-    flagMode = !flagMode;
-  });
 };
 
 const revealHints = (numHints) => {
@@ -143,26 +144,18 @@ const revealHints = (numHints) => {
   }
 };
 
-document.addEventListener("keydown", (e) => {
-  e.which === 70 && flagMode === false && (flagMode = true);
-});
-document.addEventListener("keyup", (e) => {
-  e.which === 70 && flagMode === true && (flagMode = false);
-});
-
 const checkForWin = () => {
   if (squaresLeft === 0 && flagsPlaced.innerText * 1 === targetsArray.length) {
     message.innerText = "YOU WON!";
     message.classList.remove("hidden");
   }
-  console.log(flagsPlaced.innerText * 1);
 };
 
 const reset = () => {
   generateField();
   randomiseTargets(10);
-  revealHints(34);
-  addClickHandlers();
+  revealHints(12);
+  addTileClickHandlers();
 };
 
 setTimeout(() => {
