@@ -28,6 +28,7 @@ h1 {
 .grid-container {
   display: flex;
   overflow: hidden;
+  width: 80vw;
   height: 80vw;
   flex-direction: column;
 }
